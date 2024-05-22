@@ -16,13 +16,59 @@ class ResultPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
-            ResultWidget(bmi: bmi,),
+            ResultWidget(bmi: bmi),
+            CategoryWidget(bmi: bmi)
           ],
         ),
+        
       ),
     );
   }
 }
+
+class CategoryWidget extends StatelessWidget {
+  const CategoryWidget({
+    required this.bmi,
+    super.key,
+  });
+  final double bmi;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textStyle = theme.textTheme.bodyMedium!.copyWith(
+      color: theme.colorScheme.onPrimary,
+    );
+
+    String getCategory(bmi){
+      switch(bmi) {
+        case <16: return "Underweight (Severe thinness)";
+        case >= 16 && < 17: return "Underweight (Moderate thinness)	";
+        case >=17 && < 18.5: return "Underweight (Mild thinness)";
+        case >=18.5 && < 25: return "Normal range";
+        case >=25 && < 30: return "Overweight (Pre-obese)	";
+        case >= 30 && < 35: return "Obese (Class I)";
+        case >= 35 && < 40: return "Obese (Class II)";
+        case >= 40: return "Obese (Class II)";
+        default: return "break";
+      }
+    }
+    var category = getCategory(bmi);
+
+    return Card(
+        color: theme.colorScheme.primary,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+              category,
+            style: textStyle,
+          ),
+        ),
+    );
+  }
+}
+
+
 
 class ResultWidget extends StatelessWidget {
   const ResultWidget({
