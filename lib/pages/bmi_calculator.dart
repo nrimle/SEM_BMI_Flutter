@@ -3,6 +3,7 @@ import 'package:sem_bmi_flutter/pages/results_page.dart';
 
 class InputPage extends StatefulWidget {
   InputPage({required this.title});
+
   final String title;
 
   @override
@@ -23,7 +24,7 @@ class _InputPageState extends State<InputPage> {
   void calculateBMI() {
     var height = double.parse(heightController.text);
     var weight = double.parse(weightController.text);
-    var bmi = weight / (height * height);
+    var bmi = weight / (height * height/10000);
 
     Navigator.push(
       context,
@@ -40,24 +41,36 @@ class _InputPageState extends State<InputPage> {
       body: Center(
         child: Column(
           children: <Widget>[
-            TextField(
-              controller: heightController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: 'Enter your height in meters',
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: heightController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter your height in cm',
+                ),
               ),
             ),
-            TextField(
-              controller: weightController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: 'Enter your weight in kg',
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: weightController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter your weight in kg',
+                ),
               ),
             ),
-            ElevatedButton(
-              onPressed: calculateBMI,
-              child: Text('Calculate'),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: ElevatedButton(
+                onPressed: calculateBMI,
+                child: Text('Calculate'),
+              ),
             ),
+            BmiInfo()
           ],
         ),
       ),
@@ -65,3 +78,42 @@ class _InputPageState extends State<InputPage> {
   }
 }
 
+class BmiInfo extends StatelessWidget {
+  const BmiInfo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final titleStyle = theme.textTheme.displaySmall!.copyWith(
+      color: theme.colorScheme.onPrimary,
+    );
+    final textStyle = theme.textTheme.bodyMedium!.copyWith(
+      color: theme.colorScheme.onPrimary,
+    );
+
+    return Card(
+      color: theme.colorScheme.primary,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'BMI in brief',
+              style: titleStyle,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Body Mass Index (BMI) is a measure calculated from a person's weight and height to categorize them as underweight, normal weight, overweight, or obese. It provides a simple estimate of body fat but doesn't account for muscle mass or other factors. Despite its limitations, BMI is widely used in assessing health risks.",
+              style: textStyle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
