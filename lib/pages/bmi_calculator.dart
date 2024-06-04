@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sem_bmi_flutter/model/measurement.dart';
 import 'package:sem_bmi_flutter/pages/results_page.dart';
+import 'package:sem_bmi_flutter/services/calculateService.dart';
+import 'package:sem_bmi_flutter/services/databaseService.dart';
 
 class InputPage extends StatefulWidget {
   InputPage({required this.title});
@@ -13,6 +16,7 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   final weightController = TextEditingController();
   final heightController = TextEditingController();
+  final DatabaseService dbService = DatabaseService();
 
   @override
   void dispose() {
@@ -21,10 +25,13 @@ class _InputPageState extends State<InputPage> {
     super.dispose();
   }
 
-  void calculateBMI() {
-    var height = double.parse(heightController.text);
-    var weight = double.parse(weightController.text);
-    var bmi = weight / (height * height/10000);
+  void calculateBMI() async {
+    var m = Measurement(
+        height: double.parse(heightController.text),
+        weight: double.parse(weightController.text));
+    double bmi = Calculateservice.calculateBMI(m);
+
+    await dbService.insertMeasurement(m);
 
     Navigator.push(
       context,

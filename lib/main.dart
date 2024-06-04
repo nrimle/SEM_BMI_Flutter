@@ -2,12 +2,16 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sem_bmi_flutter/pages/bmi_calculator.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sem_bmi_flutter/pages/categories_page.dart';
 
-import 'pages/favorites_page.dart';
+import 'pages/history_page.dart';
 import 'pages/generator_page.dart';
 
 void main() {
+  // Initialize FFI
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
   runApp(MyApp());
 }
 
@@ -68,6 +72,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         page = CategoriesPage(title: "BMI Categories");
         break;
+      case 2:
+        page = HistoryPage();
+        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -87,6 +94,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     NavigationRailDestination(
                       icon: Icon(Icons.list),
                       label: Text('BMI Categories'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.history),
+                      label: Text('BMI History'),
                     ),
                   ],
                   selectedIndex: selectedIndex,
