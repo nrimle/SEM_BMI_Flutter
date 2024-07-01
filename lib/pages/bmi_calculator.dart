@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sem_bmi_flutter/model/measurement.dart';
 import 'package:sem_bmi_flutter/pages/results_page.dart';
-import 'package:sem_bmi_flutter/services/calculateService.dart';
-import 'package:sem_bmi_flutter/services/databaseService.dart';
+import 'package:sem_bmi_flutter/services/calculate_service.dart';
+import 'package:sem_bmi_flutter/services/database_service.dart';
 
 class InputPage extends StatefulWidget {
   InputPage({required this.title});
@@ -25,14 +25,20 @@ class _InputPageState extends State<InputPage> {
     super.dispose();
   }
 
+  // Function to calculate BMI and navigate to the result page
   void calculateBMI() async {
+    // Create a measurement object from the input values
     var m = Measurement(
         height: double.parse(heightController.text),
         weight: double.parse(weightController.text));
+    
+    // Calculate BMI
     double bmi = Calculateservice.calculateBMI(m);
 
+    // Insert the measurement into the database
     await dbService.insertMeasurement(m);
 
+    // Navigate to the result page
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ResultPage(bmi: bmi)),
@@ -48,6 +54,7 @@ class _InputPageState extends State<InputPage> {
       body: Center(
         child: Column(
           children: <Widget>[
+            // Input field for height
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -59,6 +66,7 @@ class _InputPageState extends State<InputPage> {
                 ),
               ),
             ),
+            // Input field for weight
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -70,6 +78,7 @@ class _InputPageState extends State<InputPage> {
                 ),
               ),
             ),
+            // Button to calculate BMI
             Padding(
               padding: const EdgeInsets.all(20),
               child: ElevatedButton(
@@ -77,6 +86,7 @@ class _InputPageState extends State<InputPage> {
                 child: Text('Calculate'),
               ),
             ),
+            // Widget to display BMI information
             BmiInfo()
           ],
         ),
@@ -86,13 +96,14 @@ class _InputPageState extends State<InputPage> {
 }
 
 class BmiInfo extends StatelessWidget {
-  const BmiInfo({
-    super.key,
-  });
+  const BmiInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Fetch theme data
     final theme = Theme.of(context);
+    
+    // Define text styles based on theme
     final titleStyle = theme.textTheme.displaySmall!.copyWith(
       color: theme.colorScheme.onPrimary,
     );
@@ -104,6 +115,7 @@ class BmiInfo extends StatelessWidget {
       color: theme.colorScheme.primary,
       child: Column(
         children: [
+          // Title of the BMI info section
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -112,6 +124,7 @@ class BmiInfo extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
+          // Description of BMI
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(

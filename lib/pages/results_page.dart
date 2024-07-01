@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class ResultPage extends StatelessWidget {
   ResultPage({
     required this.bmi,
-    super.key
+    super.key,
   });
+
   final double bmi;
 
   @override
@@ -17,10 +18,9 @@ class ResultPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             ResultWidget(bmi: bmi),
-            CategoryWidget(bmi: bmi)
+            CategoryWidget(bmi: bmi),
           ],
         ),
-        
       ),
     );
   }
@@ -31,6 +31,7 @@ class CategoryWidget extends StatelessWidget {
     required this.bmi,
     super.key,
   });
+
   final double bmi;
 
   @override
@@ -40,41 +41,40 @@ class CategoryWidget extends StatelessWidget {
       color: theme.colorScheme.onPrimary,
     );
 
-    String getCategory(bmi){
-      switch(bmi) {
-        case <16: return "Underweight (Severe thinness)";
-        case >= 16 && < 17: return "Underweight (Moderate thinness)";
-        case >=17 && < 18.5: return "Underweight (Mild thinness)";
-        case >=18.5 && < 25: return "Normal range";
-        case >=25 && < 30: return "Overweight (Pre-obese)";
-        case >= 30 && < 35: return "Obese (Class I)";
-        case >= 35 && < 40: return "Obese (Class II)";
-        case >= 40: return "Obese (Class III)";
-        default: return "break";
-      }
+    // Funktion zur Bestimmung der BMI-Kategorie
+    String getCategory(double bmi) {
+      if (bmi < 16) return "Underweight (Severe thinness)";
+      if (bmi >= 16 && bmi < 17) return "Underweight (Moderate thinness)";
+      if (bmi >= 17 && bmi < 18.5) return "Underweight (Mild thinness)";
+      if (bmi >= 18.5 && bmi < 25) return "Normal range";
+      if (bmi >= 25 && bmi < 30) return "Overweight (Pre-obese)";
+      if (bmi >= 30 && bmi < 35) return "Obese (Class I)";
+      if (bmi >= 35 && bmi < 40) return "Obese (Class II)";
+      if (bmi >= 40) return "Obese (Class III)";
+      return "Unknown category";
     }
+
     var category = getCategory(bmi);
 
     return Card(
-        color: theme.colorScheme.primary,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-              category,
-            style: textStyle,
-          ),
+      color: theme.colorScheme.primary,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          category,
+          style: textStyle,
         ),
+      ),
     );
   }
 }
-
-
 
 class ResultWidget extends StatelessWidget {
   const ResultWidget({
     required this.bmi,
     super.key,
   });
+
   final double bmi;
 
   @override
@@ -88,26 +88,26 @@ class ResultWidget extends StatelessWidget {
     );
 
     return Column(
-        children: [
-          Padding(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            'BMI is:',
+            style: textStyle,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Card(
+          color: theme.colorScheme.primary,
+          child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'BMI is:',
-              style: textStyle,
+              bmi.toStringAsFixed(2),
+              style: BMIstyle,
             ),
           ),
-          const SizedBox(height: 20),
-          Card(
-              color: theme.colorScheme.primary,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  bmi.toStringAsFixed(2),
-                  style: BMIstyle,
-                ),
-              ),
-          )
-        ],
+        ),
+      ],
     );
   }
 }

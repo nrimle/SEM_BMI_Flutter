@@ -4,6 +4,8 @@ class CategoriesPage extends StatelessWidget {
   CategoriesPage({required this.title});
 
   final String title;
+
+  // Liste der BMI-Kategorien und -Bereiche
   final List<Map<String, dynamic>> bmis = [
     {'Category': 'Underweight (Severe)', 'Range': 'Below 16'},
     {'Category': 'Underweight (Moderate)', 'Range': '16 - 16.9'},
@@ -22,15 +24,21 @@ class CategoriesPage extends StatelessWidget {
         title: Text(title),
       ),
       body: DataTable(
-          columns: [
-            DataColumn(label: Text('BMI Range')),
-            DataColumn(label: Text('Category')),
-          ],
-          rows: bmis.map((bmii) => DataRow(cells: [
-            DataCell(Container(width: 80, child: Text(bmii['Range']))),
-            DataCell(Text(bmii['Category'])),
-          ])).toList(),
-        ),
-      );
+        // Definieren der Spalten für die DataTable
+        columns: [
+          DataColumn(label: Text('BMI Range')),
+          DataColumn(label: Text('Category')),
+        ],
+        rows: bmis.map((bmi) => DataRow(cells: [
+          DataCell(
+            Container(
+              width: 80,
+              child: Text(bmi['Range']),
+            ),
+          ),
+          DataCell(Text(bmi['Category'])),
+        ])).toList(),
+      ),
+    );
   }
 }

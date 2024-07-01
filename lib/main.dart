@@ -6,7 +6,6 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sem_bmi_flutter/pages/categories_page.dart';
 
 import 'pages/history_page.dart';
-import 'pages/generator_page.dart';
 
 void main() {
   // Initialize FFI
